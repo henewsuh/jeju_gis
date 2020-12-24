@@ -335,7 +335,7 @@ def franClass_type_analysis_plotly(df_dict, month, time_s):
         
         return fig
         
-    def horizontal_stacked_bar(df_orig, y_s, sum_col = None, name_used = False, title = False):
+    def horizontal_stacked_bar(df_orig, y_s, cut = 0.03, sum_col = None, name_used = False, title = False):
         '''
         '''
         colors = ['aliceblue', 'antiquewhite', 'aqua', 'aquamarine', 'azure', 'beige', 'bisque', 'black', 'blanchedalmond', 'blue', 'blueviolet',\
@@ -381,12 +381,12 @@ def franClass_type_analysis_plotly(df_dict, month, time_s):
                     )
                 ))
         fig.update_layout(title = title, barmode = 'stack', paper_bgcolor='rgb(255, 255, 255)',\
-                          plot_bgcolor='rgb(255, 255, 255)',margin=dict(l=30, r=10, t=30, b=30), showlegend=True)
+                          plot_bgcolor='rgb(255, 255, 255)',margin=dict(l=30, r=40, t=30, b=30), showlegend=True)
         
         
         annotations = []
         for yd, xd in zip(y_data, x_data):
-            if xd[0] > 0.01:
+            if xd[0] > cut:
                 annotations.append(dict(xref='x', yref='y',
                                 x=xd[0] / 2, y=yd,
                                 text=str(int(round(xd[0],2) * 100)) + '%',
@@ -396,7 +396,7 @@ def franClass_type_analysis_plotly(df_dict, month, time_s):
             space = xd[0]
             for i in range(1, len(xd)):
                     # labeling the rest of percentages for each bar (x_axis)
-                    if xd[i] > 0.01:
+                    if xd[i] > cut:
                         annotations.append(dict(xref='x', yref='y',
                                                 x=space + (xd[i]/2), y=yd,
                                                 text=str(int(round(xd[i],2) * 100)) + '%',
@@ -419,7 +419,7 @@ def franClass_type_analysis_plotly(df_dict, month, time_s):
     
     for t in type_dict.keys():
         # 파이 차트 생성
-        df, fig = pie_chart(df_dict[time_s][t], 'Type', 'Type', cut = 0.03, top = 3, \
+        df, fig = pie_chart(df_dict[time_s][t], 'Type', 'Type', cut = 0.03, top = 10, \
                         title = '{}월 {} 제주도 {} 업종 별 파이'.format(month, time_dict[time_s], type_dict[t]))
         fig.write_image('{}월 {} 제주도 {} 업종 별 파이.png'.format(month, time_dict[time_s], type_dict[t]))
         name_used = df.names.unique().tolist()
@@ -433,7 +433,7 @@ def franClass_type_analysis_plotly(df_dict, month, time_s):
                           title = '{} 업종 별 총 사용금액 대비 재난지원금 사용금액: {}월 {} [단위: 1000원]'.format(type_dict[t], month, time_dict[time_s]))
         fig.write_image('{} 업종 별 총 사용금액 대비 재난지원금 사용금액_{}월 {}.png'.format(type_dict[t], month, time_dict[time_s]))
     
-        fig= horizontal_stacked_bar(df_dict[time_s][t], ['TotalSpent', 'DisSpent', 'NumofSpent', 'NumofDisSpent'], name_used = name_used,\
+        fig= horizontal_stacked_bar(df_dict[time_s][t], ['TotalSpent', 'DisSpent', 'NumofSpent', 'NumofDisSpent'], cut = 0.03, name_used = name_used,\
                           title = '{} 업종 별 재난지원금 사용건수 및 금액: {}월 {}'.format(type_dict[t], month, time_dict[time_s]))
         fig.write_image('{} 업종 별 재난지원금 사용건수 및 금액_ {}월 {}.png'.format(type_dict[t], month, time_dict[time_s]))
     
@@ -668,20 +668,21 @@ def main(jj):
     print(info)
     
     
-    # 2. 좌표계 변환 및 피클로 저장
-    df_d = change_crs(df, pkl_path, month)
+    # 2. 좌표계 변환 및 피클로 저장 및 불러오기
+    # df_d = change_crs(df, pkl_path, month)
+    os.chdir(jj)
     df_d = load_data('df_{}월'.format(month))
     
     
     # 3. 시간대별 분할 
-    df_AM1, df_AM2, df_PM1, df_PM2 = time_split(df_d)
+    # df_AM1, df_AM2, df_PM1, df_PM2 = time_split(df_d)
     
     
     # 4. 소상공인별 분할 및 파이차트
-    franClass_split(df_AM1, 'AM1')
-    franClass_split(df_AM2, 'AM2')
-    franClass_split(df_PM1, 'PM1')
-    franClass_split(df_PM2, 'PM2')
+    # franClass_split(df_AM1, 'AM1')
+    # franClass_split(df_AM2, 'AM2')
+    # franClass_split(df_PM1, 'PM1')
+    # franClass_split(df_PM2, 'PM2')
     
     df_dict = dict()
     
@@ -693,7 +694,7 @@ def main(jj):
             # df_dict[time][t] = pd.read_pickle('df_{}_{}.pkl'.format(time, t))
             df_dict[time][t] = load_data('df_{}_{}'.format(time, t))
     for time in time_seq: 
-        os.chdir(pkl_path + time + '/')
+        os.chdir(os.path.join(pkl_path, time))
         df_used_dict = franClass_type_analysis_plotly(df_dict, month, time_s = time) #time_s='00시 - 06')
     
     
@@ -717,7 +718,8 @@ jeju_list = os.listdir()
 
 if __name__=='__main__':   
     for jj in jeju_list: 
-        
+        if jj[-5] is not '5':
+            continue
         print(" ")
         print("======== {} ANALYSIS START ========= ".format(jj))
         os.chdir(path)
