@@ -639,12 +639,10 @@ def main(jj):
     data_path = os.path.join( mainpath, 'jeju')
     
     pkl_path = os.path.join(mainpath, jj)
-    print()
-    map_path = os.path.join(pkl_path, 'map')
-    
     if not os.path.exists(pkl_path):
         os.mkdir(pkl_path)
-    
+        
+    map_path = os.path.join(pkl_path, 'map')
     if not os.path.exists(map_path):
         os.makedirs(map_path)
     
@@ -654,8 +652,8 @@ def main(jj):
     time_seq = ['AM1', 'AM2', 'PM1', 'PM2']
     
     for time in time_seq: 
-        if not os.path.exists(pkl_path + time + '/'):
-            os.mkdir(pkl_path + time + '/')
+        if not os.path.exists(pkl_path + '/' + time + '/'):
+            os.mkdir(pkl_path + '/' + time + '/')
         
 
     os.chdir(data_path)
@@ -711,8 +709,9 @@ path = os.getcwd()
 
 print('Current Path: {}'.format(path))
 
-os.chdir(path)
-jeju_list = os.listdir(path)
+os.chdir(os.path.join(path, 'jeju'))
+
+jeju_list = os.listdir()
 
 
 
@@ -721,7 +720,7 @@ if __name__=='__main__':
         
         print(" ")
         print("======== {} ANALYSIS START ========= ".format(jj))
-        
+        os.chdir(path)
         start_time = time.time()
         main(jj)
         end_time = time.time()
