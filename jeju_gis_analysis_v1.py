@@ -634,12 +634,13 @@ def gis_analysis(df, label, pkl_path, map_path, fc_class, month, time_s):
 
 
 def main(jj):                       
-    data_path = 'C:/Users/user/Desktop/dacon/krihs/jeju/'
-    mainpath = 'C:/Users/user/Desktop/dacon/krihs/'
     
+    mainpath = os.getcwd()
+    data_path = os.path.join( mainpath, 'jeju')
     
-    pkl_path = mainpath + jj + '/'
-    map_path = mainpath + jj + '/' + 'map/'
+    pkl_path = os.path.join(mainpath, jj)
+    print()
+    map_path = os.path.join(pkl_path, 'map')
     
     if not os.path.exists(pkl_path):
         os.mkdir(pkl_path)
@@ -706,7 +707,9 @@ def main(jj):
 #============================================================================================================
 
 
-path = 'C:/Users/user/Desktop/dacon/krihs/jeju/'
+path = os.getcwd()
+
+print('Current Path: {}'.format(path))
 
 os.chdir(path)
 jeju_list = os.listdir(path)
@@ -724,7 +727,6 @@ if __name__=='__main__':
         end_time = time.time()
         
         print("Running time : ", end_time - start_time)
-
 
 
 
