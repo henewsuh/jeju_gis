@@ -56,7 +56,7 @@
 > 1. Clone the  current repository 
 > 2. Make sure that all raw datasets (total 4) are in the folder 'jeju' under 'jeju_gis'.
 > 3. Execute the following command from the project home directory: 
->    - python jeju_gis_analysis_v4_for_git.py
+>    - python jeju_gis_analysis_final.py
 >
 > ## Updates
 >
