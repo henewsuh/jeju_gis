@@ -20,6 +20,9 @@
 > - folium==0.11.0
 > - geopandas==0.8.1
 > - geopy==2.0.0
+> - geojson==2.5.0
+> - geopandas==0.8.1
+> - geopy==2.0.0
 > - kaleido==0.1.0.post1
 > - matplotlib==3.3.3
 > - networkx==2.5
@@ -34,6 +37,7 @@
 > - selenium==3.141.0
 > - Shapely @ file:///C:/Users/user/Desktop/Shapely-1.7.1-cp38-cp38-win_amd64.whl
 > - sklearn==0.0
+> - tqdm==4.54.1
 >
 > ## Datasets
 >
