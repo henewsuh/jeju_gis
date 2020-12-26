@@ -9,7 +9,7 @@
 >
 > - 5월, 6월, 7월, 8월별 
 > - 시간대별 (00시 - 06시 / 06시 - 12시 / 12시 -18시 / 18시 - 24시)
-> - 소상공인구분별 + 업종별 
+> - 소상공인구분별 + 업종별 + 업종 대분류별
 > - 지역별 (읍면동리 기반)
 >
 > ## Dependencies
@@ -56,7 +56,7 @@
 > 1. Clone the  current repository 
 > 2. Make sure that all raw datasets (total 4) are in the folder 'jeju' under 'jeju_gis'.
 > 3. Execute the following command from the project home directory: 
->    - python jeju_gis_analysis_v22_for_git.py
+>    - python jeju_gis_analysis_v4_for_git.py
 >
 > ## Updates
 >
@@ -71,6 +71,17 @@
 > - 월별 읍면동리 지역기반 사용금액/재난지원금 사용금액/이용건수/재난지원금 지도 시각화 추가
 >   - 확인 경로 예시: KRI-DAC_Jeju_data5.txt > map > 5_DisSpent.html
 >     - 설명: 5월 한달동안의 재난지원금 사용금액을 읍면동리 지역기반으로 지도에 시각화
+>
+> ### 2020.12.26 updates:
+>
+> - 업종명 별 대분류 코드 엑셀파일 추가 (extra_data폴더 내 'code_table.csv')
+> - 소상공인 업종 대분류 별 총 사용금액 대비 재난지원금 사용금액 비교 시각화 추가
+> - 월별 총 사용금액 대비 재난지원금 사용금액 비교 시각화 추가
+> - 시간 별 재난지원금 사용금액 비율 비교 시각화 추가 
+> - 읍면동리 지역기반 사용금액/이용건수 비교 막대그래프 시각화 추가 
+> - 코드 함수 별 설명 및 시각화 결과 공유 PPT 추가
+
+
 
 
 
