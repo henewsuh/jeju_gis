@@ -2,30 +2,17 @@
 import pandas as pd
 import os 
 import folium
-from folium import plugins
 from pyproj import Proj, transform
-from bokeh.models import ColumnDataSource
-from bokeh.plotting import figure
-from bokeh.io import curdoc
-import matplotlib.pyplot as plt
 import matplotlib as mpl
-import seaborn as sns
 import pickle 
-import matplotlib.font_manager as fm
 import numpy as np
-from folium import Choropleth, Circle, Marker
-from folium import plugins
 from folium.plugins import HeatMap
 import time
 import plotly.express as px
 import plotly.graph_objects as go
-import random
 from tqdm.notebook import tqdm
 import geopandas as gpd
-import requests 
-import sys
 import json
-import datetime 
 from tqdm import tqdm
 from plotly.subplots import make_subplots
 from shapely.geometry import Point
