@@ -61,6 +61,9 @@ def macro_analysis(macro_path):
     os.chdir('../')
     df_all = pd.concat(dfs.values(), axis=0)
     
+    
+
+    
     # 전체 기간 모든 TYPE 별 값들
     print("Macro 1. 업종별 분석")
     types, types_cnt = np.unique(df_all['Type'], return_counts = True)
@@ -231,6 +234,186 @@ def macro_analysis(macro_path):
     fig6 = px.bar(foreign_df, x='hours', y='DisSpent', title='외국음식 한시간별 재난지원금 사용금액', color='DisSpent',
                  labels={'DisSpent':'재난지원금 사용금액'}, height=400) 
     fig6.write_image('서양음식_한시간별_재난지원금_사용금액.png')
+    
+    
+    print('Macro 3. 월별 업종 종류별 재난지원금 사용실태 분석')
+    jongs = df_all['Type'].unique().tolist()
+    
+    
+    # DisSpent
+    may_dict = dict()
+    june_dict = dict()
+    july_dict = dict()
+    august_dict = dict()
+    
+    
+    for i in range(len(jongs)): 
+        may_dict[jongs[i]] = 0
+        june_dict[jongs[i]] = 0
+        july_dict[jongs[i]] = 0
+        august_dict[jongs[i]] = 0
+
+    for j in jongs:
+        cur_j = df_all.loc[df_all['Type'] == j]
+
+        may_dict[j] = cur_j.loc[cur_j['YM'] == 202005]['DisSpent'].sum()
+        june_dict[j] = cur_j.loc[cur_j['YM'] == 202006]['DisSpent'].sum()
+        july_dict[j] = cur_j.loc[cur_j['YM'] == 202007]['DisSpent'].sum()
+        august_dict[j] = cur_j.loc[cur_j['YM'] == 202008]['DisSpent'].sum()
+    
+    may_df = dict2df(may_dict, 'Type', 'DisSpent')
+    may_df = may_df.sort_values(['DisSpent'], ascending=False)
+    
+    june_df = dict2df(june_dict, 'Type', 'DisSpent')
+    june_df = june_df.sort_values(['DisSpent'], ascending=False)
+    
+    july_df = dict2df(july_dict, 'Type', 'DisSpent')
+    july_df = july_df.sort_values(['DisSpent'], ascending=False)
+    
+    august_df = dict2df(august_dict, 'Type', 'DisSpent')
+    august_df = august_df.sort_values(['DisSpent'], ascending=False)
+    
+    
+    
+    def make_overtime_bargraph(df, x, y, title, color, labels, height, color_scale, width):
+        fig =  px.bar(df, x=x, y=y, title=title, color=color, color_continuous_scale=color_scale,
+                 labels=labels, height=height, width=width) 
+        fig.write_image(title + '.png')
+
+    
+    make_overtime_bargraph(may_df, x='Type', y='DisSpent', title='5월 업종명 별 재난지원금 사용금액', color='DisSpent',
+                           labels={'DisSpent' : '재난지원금 사용금액'}, height=700, color_scale=px.colors.sequential.Bluered, width=2000)
+    make_overtime_bargraph(june_df, x='Type', y='DisSpent', title='6월 업종명 별 재난지원금 사용금액', color='DisSpent',
+                           labels={'DisSpent' : '재난지원금 사용금액'}, height=700, color_scale=px.colors.sequential.Bluered, width=2000)
+    make_overtime_bargraph(july_df, x='Type', y='DisSpent', title='7월 업종명 별 재난지원금 사용금액', color='DisSpent',
+                           labels={'DisSpent' : '재난지원금 사용금액'}, height=700, color_scale=px.colors.sequential.Bluered, width=2000)
+    make_overtime_bargraph(august_df, x='Type', y='DisSpent', title='8월 업종명 별 재난지원금 사용금액', color='DisSpent',
+                           labels={'DisSpent' : '재난지원금 사용금액'}, height=700, color_scale=px.colors.sequential.Bluered, width=2000)
+    
+    
+    # TotalSpent
+    may_dict2 = dict()
+    june_dict2 = dict()
+    july_dict2 = dict()
+    august_dict2 = dict()
+    for i in range(len(jongs)): 
+        may_dict2[jongs[i]] = 0
+        june_dict2[jongs[i]] = 0
+        july_dict2[jongs[i]] = 0
+        august_dict2[jongs[i]] = 0
+
+    for j in jongs:
+        cur_j = df_all.loc[df_all['Type'] == j]
+
+        may_dict2[j] = cur_j.loc[cur_j['YM'] == 202005]['TotalSpent'].sum()
+        june_dict2[j] = cur_j.loc[cur_j['YM'] == 202006]['TotalSpent'].sum()
+        july_dict2[j] = cur_j.loc[cur_j['YM'] == 202007]['TotalSpent'].sum()
+        august_dict2[j] = cur_j.loc[cur_j['YM'] == 202008]['TotalSpent'].sum()
+    
+    may_df2 = dict2df(may_dict2, 'Type', 'TotalSpent')
+    may_df2 = may_df2.sort_values(['TotalSpent'], ascending=False)
+    
+    june_df2 = dict2df(june_dict2, 'Type', 'TotalSpent')
+    june_df2 = june_df2.sort_values(['TotalSpent'], ascending=False)
+    
+    july_df2 = dict2df(july_dict2, 'Type', 'TotalSpent')
+    july_df2 = july_df2.sort_values(['TotalSpent'], ascending=False)
+    
+    august_df2 = dict2df(august_dict2, 'Type', 'TotalSpent')
+    august_df2 = august_df2.sort_values(['TotalSpent'], ascending=False)
+    
+    
+    
+    def make_overtime_bargraph(df, x, y, title, color, labels, height, color_scale, width):
+        fig =  px.bar(df, x=x, y=y, title=title, color=color, color_continuous_scale=color_scale,
+                 labels=labels, height=height, width=width) 
+        fig.write_image(title + '.png')
+
+    
+    make_overtime_bargraph(may_df2, x='Type', y='TotalSpent', title='5월 업종명 별 총 사용금액', color='TotalSpent',
+                           labels={'TotalSpent' : '총 사용금액'}, height=700, color_scale=px.colors.sequential.Plotly3, width=2000)
+    make_overtime_bargraph(june_df2, x='Type', y='TotalSpent', title='6월 업종명 별 사용금액', color='TotalSpent',
+                           labels={'TotalSpent' : '총 사용금액'}, height=700, color_scale=px.colors.sequential.Plotly3, width=2000)
+    make_overtime_bargraph(july_df2, x='Type', y='TotalSpent', title='7월 업종명 별 총 사용금액', color='TotalSpent',
+                           labels={'TotalSpent' : '총 사용금액'}, height=700, color_scale=px.colors.sequential.Plotly3, width=2000)
+    make_overtime_bargraph(august_df2, x='Type', y='TotalSpent', title='8월 업종명 별 총 사용금액', color='TotalSpent',
+                           labels={'TotalSpent' : '총 사용금액'}, height=700, color_scale=px.colors.sequential.Plotly3, width=2000)
+    
+    
+    
+    # 소상공인별
+    print('Macro 4. 월별 소상공인별 재난지원금 사용실태 분석')
+    franClass = df_all['FranClass'].unique().tolist()
+    
+     # TotalSpent
+    may_dict3 = dict()
+    june_dict3 = dict()
+    july_dict3 = dict()
+    august_dict3 = dict()
+    for i in range(len(franClass)): 
+        may_dict3[franClass[i]] = 0
+        june_dict3[franClass[i]] = 0
+        july_dict3[franClass[i]] = 0
+        august_dict3[franClass[i]] = 0
+
+    for f in franClass:
+        cur_f = df_all.loc[df_all['FranClass'] == f]
+
+        may_dict3[f] = cur_f.loc[cur_f['YM'] == 202005]['TotalSpent'].sum()
+        june_dict3[f] = cur_f.loc[cur_f['YM'] == 202006]['TotalSpent'].sum()
+        july_dict3[f] = cur_f.loc[cur_f['YM'] == 202007]['TotalSpent'].sum()
+        august_dict3[f] = cur_f.loc[cur_f['YM'] == 202008]['TotalSpent'].sum()
+    
+    may_df3 = dict2df(may_dict3, 'FranClass', 'TotalSpent')  
+    june_df3 = dict2df(june_dict3, 'FranClass', 'TotalSpent') 
+    july_df3 = dict2df(july_dict3, 'FranClass', 'TotalSpent') 
+    august_df3= dict2df(august_dict3, 'FranClass', 'TotalSpent')
+    
+    
+    make_overtime_bargraph(may_df3, x='FranClass', y='TotalSpent', title='5월 소상공인구분 별 총 사용금액', color='TotalSpent',
+                           labels={'TotalSpent' : '총 사용금액'}, height=500, color_scale=px.colors.sequential.Purp, width=700)
+    make_overtime_bargraph(june_df3, x='FranClass', y='TotalSpent', title='6월 소상공인구분 별 사용금액', color='TotalSpent',
+                           labels={'TotalSpent' : '총 사용금액'}, height=500, color_scale=px.colors.sequential.Purp, width=700)
+    make_overtime_bargraph(july_df3, x='FranClass', y='TotalSpent', title='7월 소상공인구분 별 총 사용금액', color='TotalSpent',
+                           labels={'TotalSpent' : '총 사용금액'}, height=500, color_scale=px.colors.sequential.Purp, width=700)
+    make_overtime_bargraph(august_df3, x='FranClass', y='TotalSpent', title='8월 소상공인구분 별 총 사용금액', color='TotalSpent',
+                           labels={'TotalSpent' : '총 사용금액'}, height=500, color_scale=px.colors.sequential.Purp, width=700)
+    
+     # TotalSpent
+    may_dict4 = dict()
+    june_dict4 = dict()
+    july_dict4 = dict()
+    august_dict4 = dict()
+    for i in range(len(franClass)): 
+        may_dict4[franClass[i]] = 0
+        june_dict4[franClass[i]] = 0
+        july_dict4[franClass[i]] = 0
+        august_dict4[franClass[i]] = 0
+
+    for f in franClass:
+        cur_f = df_all.loc[df_all['FranClass'] == f]
+
+        may_dict4[f] = cur_f.loc[cur_f['YM'] == 202005]['DisSpent'].sum()
+        june_dict4[f] = cur_f.loc[cur_f['YM'] == 202006]['DisSpent'].sum()
+        july_dict4[f] = cur_f.loc[cur_f['YM'] == 202007]['DisSpent'].sum()
+        august_dict4[f] = cur_f.loc[cur_f['YM'] == 202008]['DisSpent'].sum()
+    
+    may_df4 = dict2df(may_dict4, 'FranClass', 'DisSpent')
+    june_df4 = dict2df(june_dict4, 'FranClass', 'DisSpent')    
+    july_df4 = dict2df(july_dict4, 'FranClass', 'DisSpent')    
+    august_df4 = dict2df(august_dict4, 'FranClass', 'DisSpent')
+    
+    
+    make_overtime_bargraph(may_df4, x='FranClass', y='DisSpent', title='5월 소상공인구분 별 총 재난지원금 사용금액', color='DisSpent',
+                           labels={'DisSpent' : '총 재난지원금 사용금액'}, height=500, color_scale=px.colors.sequential.Magenta, width=700)
+    make_overtime_bargraph(june_df4, x='FranClass', y='DisSpent', title='6월 소상공인구분 별 총 재난지원금 사용금액', color='DisSpent',
+                           labels={'DisSpent' : '총 재난지원금 사용금액'}, height=500, color_scale=px.colors.sequential.Magenta, width=700)
+    make_overtime_bargraph(july_df4, x='FranClass', y='DisSpent', title='7월 소상공인구분 별 총 재난지원금 사용금액', color='DisSpent',
+                           labels={'DisSpent' : '총 재난지원금 사용금액'}, height=500, color_scale=px.colors.sequential.Magenta, width=700)
+    make_overtime_bargraph(august_df4, x='FranClass', y='DisSpent', title='8월 소상공인구분 별 총 재난지원금 사용금액', color='DisSpent',
+                           labels={'DisSpent' : '총 재난지원금 사용금액'}, height=500, color_scale=px.colors.sequential.Magenta, width=700)
+    
+    
 
 
 def change_crs(df, pkl_path, month): 
@@ -276,6 +459,12 @@ def change_crs(df, pkl_path, month):
     write_data(df_55, 'df_{}월'.format(month))
     # df_55.to_pickle('df_{}월.pkl'.format(month))    
 
+    
+
+
+    
+    
+    
     
     
 def time_split(new_df): 
@@ -1236,6 +1425,7 @@ if __name__=='__main__':
     
     
     print("======== PART {} ANALYSIS START ========= ".format(1))
+    
     all_sum_dict = dict()
     for jj in jeju_list: 
         # if jj[-5] is not '6':
