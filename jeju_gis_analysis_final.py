@@ -16,6 +16,8 @@ import json
 from tqdm import tqdm
 from plotly.subplots import make_subplots
 from shapely.geometry import Point
+from folium import Choropleth, Circle, Marker
+
 
 #=============================================================================================================================================
 code_table = pd.read_csv('extra_data/code_table.csv', encoding = 'utf-8-sig', sep = ',', index_col = False)
